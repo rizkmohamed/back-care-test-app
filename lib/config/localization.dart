@@ -18,7 +18,7 @@ final LocaleType localeType = LocaleType.asDefined; // device, asDefined
 | The language code should match the name of the file i.e /lang/es.json
 |--------------------------------------------------------------------------
 */
-final String? languageCode = getEnv('DEFAULT_LOCALE', defaultValue: "en");
+final String? languageCode = getEnv('DEFAULT_LOCALE', defaultValue: "ar");
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +29,7 @@ final String? languageCode = getEnv('DEFAULT_LOCALE', defaultValue: "en");
 */
 final List<String> languagesList = const [
   'en',
+  'ar',
   'es',
   'fr',
   'hi',

@@ -1,5 +1,3 @@
-
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +17,8 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:woosignal/models/response/products.dart';
 import 'package:woosignal/models/response/tax_rate.dart';
 
+import '../../app/controllers/product_detail_controller.dart';
+import '../../bootstrap/enums/wishlist_action_enums.dart';
 import 'future_build_widget.dart';
 
 class RefreshableScrollContainer extends StatelessWidget {
@@ -298,15 +298,20 @@ class ProductItemContainer extends StatefulWidget {
     this.onTap,
     // this.tabFav,
     // this.disFav,
-    this.productid, this.favButton,
+    this.productid,
+    this.favButton,
+    this.controller,
+    this.height,
   }) : super(key: key);
 
   final Product? product;
   final Function? onTap;
   // final VoidCallback? tabFav;
   // final VoidCallback? disFav;
-  final  Widget? favButton;
+  final Widget? favButton;
   final int? productid;
+  final ProductDetailController? controller;
+  final double? height;
 
   @override
   State<ProductItemContainer> createState() => _ProductItemContainerState();
@@ -318,155 +323,188 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
     if (widget.product == null) {
       return SizedBox.shrink();
     }
-    
+
     return LayoutBuilder(
       builder: (cxt, constraints) => InkWell(
         child: Container(
-          margin: EdgeInsets.all(4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          height: constraints.maxHeight,
+          child: Stack(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                // height: constraints.maxHeight * 0.5,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: [
-                      Container(
-                        color: Colors.grey[100],
-                        width: double.infinity,
+              Stack(
+                children: [
+                  // Container(
+                  //   color: Colors.white,
+                  //   width: double.infinity,
+                  // ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.5,
                       ),
-                      CachedImageWidget(
-                        image: (widget.product!.images.isNotEmpty
-                            ? widget.product!.images.first.src
-                            : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
-                        fit: BoxFit.contain,
-                        height: constraints.maxHeight / 2,
-                        width: double.infinity,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                      if (widget.product!.onSale! &&
-                          widget.product!.type != "variable")
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(3),
-                            // decoration: BoxDecoration(
-                            //   color: Colors.white70,
-                            //   borderRadius: BorderRadius.circular(4),
-                            // ),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: '',
-                                style: Theme.of(context).textTheme.bodyText1,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text:
-                                        "${workoutSaleDiscount(salePrice: widget.product!.salePrice, priceBefore: widget.product!.regularPrice)}% ${trans("off")}",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2!
-                                    //
-                                    ,
-                                  ),
-                                ],
+                    ),
+                    child: CachedImageWidget(
+                      image: (widget.product!.images.isNotEmpty
+                          ? widget.product!.images.first.src
+                          : getEnv("PRODUCT_PLACEHOLDER_IMAGE")),
+                      fit: BoxFit.contain,
+                      height: constraints.maxHeight * 0.7,
+                      width: double.infinity,
+                    ),
+                  ),
+                  if (widget.product!.onSale! &&
+                      widget.product!.type != "variable")
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(3),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.white70,
+                        //   borderRadius: BorderRadius.circular(4),
+                        // ),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: '',
+                            style: Theme.of(context).textTheme.bodyText1,
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    "${workoutSaleDiscount(salePrice: widget.product!.salePrice, priceBefore: widget.product!.regularPrice)}% ${trans("off")}",
+                                style: Theme.of(context).textTheme.bodyText2!
+                                //
+                                ,
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                      if (AppHelper.instance.appConfig!.wishlistEnabled == true)
-                        Positioned.directional(
-                          top: 0,
-                          start: 5,
-                          textDirection: TextDirection.ltr,
-                          child: 
-                           FutureBuildWidget(
-                              asyncFuture:
-                                  hasAddedWishlistProduct(widget.productid),
-                              onValue: (dynamic isInFavourites) {
-                                if (isInFavourites) {
-                                  return IconButton(
-                                      onPressed: () {
-                                        
-                                      }, 
-                                      icon: Icon(Icons.favorite,
-                                          color: Colors.red));
-                                } else {
-                                  return IconButton(
-                                      onPressed: () {
-                                        
-                                      }, 
-                                      icon: Icon(
-                                        Icons.favorite_border,
-                                        color: Colors.grey,
-                                      ));
-                                }
-                              }),
-                        )
+                      ),
+                    ),
+                ],
+              ),
+              Positioned(
+                top: constraints.maxHeight * 0.5,
+                right: constraints.maxWidth * 0.1,
+                left: constraints.maxWidth * 0.1,
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  height: constraints.maxHeight * 0.3,
+                  alignment: Alignment.bottomCenter,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.5,
+                    ),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(2),
+                        child: Center(
+                          child: Text(
+                            widget.product!.name!,
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AutoSizeText(
+                                "${formatStringCurrency(total: widget.product!.price)} ",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.left,
+                              ),
+                              if (widget.product!.onSale! &&
+                                  widget.product!.type != "variable")
+                                RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text: '${trans("Was")}: ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            fontSize: 11,
+                                          ),
+                                    ),
+                                    TextSpan(
+                                      text: formatStringCurrency(
+                                        total: widget.product!.regularPrice,
+                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color: Colors.grey,
+                                            fontSize: 11,
+                                          ),
+                                    ),
+                                  ]),
+                                ),
+                            ].toList(),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 2, bottom: 2),
-                child: Text(
-                  widget.product!.name!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(fontSize: 15),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AutoSizeText(
-                        "${formatStringCurrency(total: widget.product!.price)} ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(fontWeight: FontWeight.w600),
-                        textAlign: TextAlign.left,
-                      ),
-                      if (widget.product!.onSale! &&
-                          widget.product!.type != "variable")
-                        RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: '${trans("Was")}: ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(
-                                    fontSize: 11,
+              if (AppHelper.instance.appConfig!.wishlistEnabled == true)
+                Positioned.directional(
+                  top: 0,
+                  start: 5,
+                  textDirection: TextDirection.ltr,
+                  child: FutureBuildWidget(
+                      asyncFuture: hasAddedWishlistProduct(widget.productid),
+                      onValue: (dynamic isInFavourites) {
+                        if (isInFavourites) {
+                          return IconButton(
+                              onPressed: () =>
+                                  widget.controller?.toggleWishList(
+                                    onSuccess: () => setState(() {}),
+                                    wishlistAction: WishlistAction.remove,
                                   ),
-                            ),
-                            TextSpan(
-                              text: formatStringCurrency(
-                                total: widget.product!.regularPrice,
-                              ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.grey,
-                                    fontSize: 11,
-                                  ),
-                            ),
-                          ]),
-                        ),
-                    ].toList(),
-                  ),
-                ),
-              ),
+                              icon: Icon(Icons.favorite, color: Colors.red));
+                        } else {
+                          return IconButton(
+                              onPressed: () => widget.controller
+                                  ?.toggleWishList(
+                                      onSuccess: () => setState(() {}),
+                                      wishlistAction: WishlistAction.add),
+                              icon: Icon(
+                                Icons.favorite_border,
+                              ));
+                        }
+                      }),
+                )
             ],
           ),
         ),

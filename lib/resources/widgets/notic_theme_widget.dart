@@ -1,5 +1,3 @@
-
-
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/bottom_nav_item.dart';
@@ -93,7 +91,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
                     color: Colors.white,
                     disableDefaultTabController: true,
                     top: -15,
-                    // height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.06,
                     onTap:
                         //  (currentIndex) =>
                         //     _changeMainWidget(currentIndex, allNavTabWidgets!),

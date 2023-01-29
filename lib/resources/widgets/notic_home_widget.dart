@@ -29,13 +29,13 @@ class NoticHomeWidget extends StatefulWidget {
   NoticHomeWidget({Key? key, required this.wooSignalApp}) : super(key: key);
 
   final WooSignalApp? wooSignalApp;
-  final ProductDetailController controller = ProductDetailController();
 
   @override
   _NoticHomeWidgetState createState() => _NoticHomeWidgetState();
 }
 
 class _NoticHomeWidgetState extends State<NoticHomeWidget> {
+  final ProductDetailController controller = ProductDetailController();
   Widget? activeWidget;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -277,9 +277,12 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 shrinkWrap: false,
                                 itemBuilder: (cxt, i) {
                                   return Container(
-                                    height: height * 0.2,
+                                    height: height * 0.5,
                                     width: width / 2.5,
+                                    padding: EdgeInsets.only(
+                                        bottom: 10, left: 10, right: 10),
                                     child: ProductItemContainer(
+                                        controller: controller,
                                         productid: products[i].id,
                                         // disFav: () => widget.controller
                                         //     .toggleWishList(
@@ -320,11 +323,14 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                       ),
                     ),
                     Container(
-                      height: height * 0.3,
+                      height: height * 0.4,
                       child: (products.isNotEmpty
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: false,
+                          ? GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, crossAxisSpacing: 5),
+                              // scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
                               itemBuilder: (cxt, i) {
                                 return Container(
                                   height: height * 0.7,

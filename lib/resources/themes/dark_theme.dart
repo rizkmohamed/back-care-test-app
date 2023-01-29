@@ -17,8 +17,10 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 ThemeData darkTheme(ColorStyles darkColors) {
   try {
-    appFont = GoogleFonts.getFont(
-        AppHelper.instance.appConfig!.themeFont ?? "Poppins");
+    appFont = GoogleFonts.cairo();
+    // appFont = GoogleFonts.getFont(AppHelper.instance.appConfig!.themeFont ??
+    //     //  "Poppins"
+    //     "RobotoCondensed");
   } on Exception catch (e) {
     if (getEnv('APP_DEBUG') == true) {
       NyLogger.error(e.toString());
