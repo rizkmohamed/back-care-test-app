@@ -21,6 +21,7 @@ import 'package:woosignal/models/response/product_category.dart' as ws_category;
 import 'package:woosignal/models/response/products.dart' as ws_product;
 
 import '../../app/controllers/product_detail_controller.dart';
+import '../../app/models/cart_line_item.dart';
 import '../../bootstrap/app_helper.dart';
 import '../../bootstrap/enums/wishlist_action_enums.dart';
 import 'future_build_widget.dart';
@@ -43,6 +44,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
   final ProductLoaderController _productLoaderController =
       ProductLoaderController();
   List<ws_category.ProductCategory> _categories = [];
+  ws_product.Product? _product;
 
   bool _shouldStopRequests = false, _isLoading = true;
 
@@ -102,7 +104,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
             // showBgWhite: false,
           ),
         ),
-        // centerTitle: true,
+        centerTitle: false,
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,8 +194,10 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                   child: Text(
                                     parseHtmlString(_categories[index].name),
                                     overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
@@ -209,7 +213,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 15, top: 10),
+                      margin: EdgeInsets.only(bottom: 5, top: 5),
                       child: Swiper(
                         autoplay: true,
                         // itemHeight: height / 2,
@@ -277,11 +281,12 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                 shrinkWrap: false,
                                 itemBuilder: (cxt, i) {
                                   return Container(
-                                    height: height * 0.5,
-                                    width: width / 2.5,
+                                    height: height * 0.6,
+                                    width: width / 2.7,
                                     padding: EdgeInsets.only(
                                         bottom: 10, left: 10, right: 10),
                                     child: ProductItemContainer(
+                                        addToCart: _addItemToCart,
                                         controller: controller,
                                         productid: products[i].id,
                                         // disFav: () => widget.controller
@@ -323,18 +328,21 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                       ),
                     ),
                     Container(
-                      height: height * 0.4,
+                      // height: height * 0.4,
                       child: (products.isNotEmpty
                           ? GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2, crossAxisSpacing: 5),
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 5,
+                                      childAspectRatio: 0.7),
                               // scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
                               itemBuilder: (cxt, i) {
                                 return Container(
-                                  height: height * 0.7,
-                                  width: width / 2.5,
+                                  margin: EdgeInsetsDirectional.only(end: 10),
+                                  // height: height * 0.7,
+                                  // width: width / 2.5,
                                   child: ProductItemContainer(
                                       productid: products[i].id,
                                       // tabFav: () => widget.controller
@@ -363,6 +371,26 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
         ),
       ),
     );
+  }
+
+  _addItemToCart() async {
+    if (_product!.type != "simple") {
+      // _modalBottomSheetAttributes();
+      return;
+    }
+    if (_product!.stockStatus != "instock") {
+      showToastNotification(context,
+          title: trans("Sorry"),
+          description: trans("This item is out of stock"),
+          style: ToastNotificationStyleType.WARNING,
+          icon: Icons.local_shipping);
+      return;
+    }
+
+    await controller.itemAddToCart(
+        cartLineItem: CartLineItem.fromProduct(
+            quantityAmount: controller.quantity, product: _product!),
+        onSuccess: () => setState(() {}));
   }
 
   _onRefresh() async {

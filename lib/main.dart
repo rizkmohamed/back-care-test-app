@@ -18,7 +18,10 @@ void main() async {
       onGenerateRoute: nylo.router!.generator(),
       initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,
-      locale: Locale('ar'),
+      locale: Locale('ar', 'sa'),
+      supportedLocales: [
+        Locale('ar', 'sa'),
+      ],
     ),
   );
 }
