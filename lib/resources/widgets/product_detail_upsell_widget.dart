@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/product_loader_controller.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
@@ -50,7 +48,10 @@ class _ProductDetailUpsellWidgetState extends State<ProductDetailUpsellWidget> {
       children: [
         Container(
           height: 50,
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.003,
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,

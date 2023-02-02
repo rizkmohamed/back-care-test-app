@@ -8,6 +8,7 @@ import 'package:flutter_app/bootstrap/app_helper.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/cached_image_widget.dart';
+import 'package:flutter_app/resources/widgets/grey_border.dart';
 import 'package:flutter_app/resources/widgets/no_results_for_products_widget.dart';
 import 'package:flutter_app/resources/widgets/top_nav_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -399,21 +400,8 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                 right: constraints.maxWidth * 0.05,
                 left: constraints.maxWidth * 0.05,
                 // bottom: 2,
-                child: Container(
-                  margin: EdgeInsets.all(10),
+                child: GreyBorder(
                   height: constraints.maxHeight * 0.3,
-                  alignment: Alignment.bottomCenter,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                      width: 1.5,
-                    ),
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.center,
@@ -505,59 +493,43 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                   child: Container(
                     height: 50,
                     // width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          margin: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.grey.shade300,
-                              width: 1,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: FutureBuildWidget(
-                              asyncFuture:
-                                  hasAddedWishlistProduct(widget.productid),
-                              onValue: (dynamic isInFavourites) {
-                                if (isInFavourites) {
-                                  return IconButton(
-                                      onPressed: () =>
-                                          widget.controller?.toggleWishList(
-                                            onSuccess: () => setState(() {}),
-                                            wishlistAction:
-                                                WishlistAction.remove,
-                                          ),
-                                      icon: Icon(Icons.favorite,
-                                          color: Colors.red));
-                                } else {
-                                  return IconButton(
-                                      onPressed: () => widget.controller
-                                          ?.toggleWishList(
-                                              onSuccess: () => setState(() {}),
-                                              wishlistAction:
-                                                  WishlistAction.add),
-                                      icon: Icon(
-                                        Icons.favorite_border,
-                                        // size: 30,
-                                      ));
-                                }
-                              }),
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: 1,
                         ),
-                        SizedBox(
-                          width: constraints.maxWidth * 0.3,
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.share,
-                              // color: Colors.grey.shade300,
-                            ))
-                      ],
+                        shape: BoxShape.circle,
+                      ),
+                      child: FutureBuildWidget(
+                          asyncFuture:
+                              hasAddedWishlistProduct(widget.productid),
+                          onValue: (dynamic isInFavourites) {
+                            if (isInFavourites) {
+                              return IconButton(
+                                  onPressed: () =>
+                                      widget.controller?.toggleWishList(
+                                        onSuccess: () => setState(() {}),
+                                        wishlistAction: WishlistAction.remove,
+                                      ),
+                                  icon:
+                                      Icon(Icons.favorite, color: Colors.red));
+                            } else {
+                              return IconButton(
+                                  onPressed: () => widget.controller
+                                      ?.toggleWishList(
+                                          onSuccess: () => setState(() {}),
+                                          wishlistAction: WishlistAction.add),
+                                  icon: Icon(
+                                    Icons.favorite_border,
+                                    // size: 30,
+                                  ));
+                            }
+                          }),
                     ),
                   ),
                 ),
@@ -750,119 +722,175 @@ class CartItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        // margin: EdgeInsets.only(bottom: 7),
+        margin: EdgeInsetsDirectional.only(
+            bottom: MediaQuery.of(context).size.height * 0.01),
         decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.black12,
-              width: 1,
-            ),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 1.5,
+          ),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
           ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-        child: Column(
+        padding: EdgeInsetsDirectional.only(
+            end: MediaQuery.of(context).size.width * 0.02),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  child: CachedImageWidget(
-                      image: (cartLineItem.imageSrc == ""
-                          ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
-                          : cartLineItem.imageSrc),
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      fit: BoxFit.contain),
-                  flex: 2,
-                ),
-                Flexible(
-                  child: Padding(
-                    child: Column(
+            Flexible(
+              child: CachedImageWidget(
+                  image: (cartLineItem.imageSrc == ""
+                      ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
+                      : cartLineItem.imageSrc),
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  fit: BoxFit.fill),
+              flex: 2,
+            ),
+            Flexible(
+              child: Padding(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      cartLineItem.name!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
+                      children: [
                         Text(
-                          cartLineItem.name!,
+                          formatDoubleCurrency(
+                            total: parseWcPrice(cartLineItem.total),
+                          ),
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1!
                               .copyWith(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
+                          textAlign: TextAlign.center,
                         ),
-                        (cartLineItem.variationOptions != null
-                            ? Text(cartLineItem.variationOptions!,
-                                style: Theme.of(context).textTheme.bodyText1)
-                            : Container()),
+
+                        // SizedBox(),
+                        if (cartLineItem.onSale == true &&
+                            cartLineItem.type != "variable")
+                          Text(
+                            formatStringCurrency(
+                                total: cartLineItem.regularPrice),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          )
+                      ],
+                    ),
+                    RatingBarIndicator(
+                      rating: double.parse(cartLineItem.averageRating ?? '2'),
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 18,
+                      direction: Axis.horizontal,
+                    ),
+                    // (cartLineItem.variationOptions != null
+                    //     ? Text(cartLineItem.variationOptions!,
+                    //         style: Theme.of(context).textTheme.bodyText1)
+                    //     : Container()),
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: <Widget>[
+                    //     Text(
+                    //       (cartLineItem.stockStatus == "outofstock"
+                    //           ? trans("Out of stock")
+                    //           : trans("In Stock")),
+                    //       style: (cartLineItem.stockStatus == "outofstock"
+                    //           ? Theme.of(context).textTheme.caption
+                    //           : Theme.of(context).textTheme.bodyText2),
+                    //     ),
+                    //     Text(
+                    //       formatDoubleCurrency(
+                    //         total: parseWcPrice(cartLineItem.total),
+                    //       ),
+                    //       style: Theme.of(context)
+                    //           .textTheme
+                    //           .subtitle1!
+                    //           .copyWith(fontWeight: FontWeight.bold),
+                    //       textAlign: TextAlign.center,
+                    //     )
+                    //   ],
+                    // ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              (cartLineItem.stockStatus == "outofstock"
-                                  ? trans("Out of stock")
-                                  : trans("In Stock")),
-                              style: (cartLineItem.stockStatus == "outofstock"
-                                  ? Theme.of(context).textTheme.caption
-                                  : Theme.of(context).textTheme.bodyText2),
-                            ),
-                            Text(
-                              formatDoubleCurrency(
-                                total: parseWcPrice(cartLineItem.total),
+                            IconButton(
+                              icon: Icon(
+                                Icons.remove_circle,
+                                color: ThemeColor.get(context).buttonBackground,
                               ),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            )
+                              onPressed: actionDecrementQuantity,
+                              highlightColor: Colors.transparent,
+                            ),
+                            Text(cartLineItem.quantity.toString(),
+                                style: Theme.of(context).textTheme.headline6),
+                            IconButton(
+                              icon: Icon(
+                                Icons.add_circle,
+                                color: ThemeColor.get(context).buttonBackground,
+                              ),
+                              onPressed: actionIncrementQuantity,
+                              highlightColor: Colors.transparent,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              alignment: Alignment.centerRight,
+                              icon: Icon(Icons.delete_outline_rounded,
+                                  color: Color.fromARGB(255, 115, 20, 13),
+                                  size: 20),
+                              onPressed: actionRemoveItem,
+                              highlightColor: Colors.transparent,
+                            ),
+                            Text(trans("Delete"),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(
+                                        color:
+                                            Color.fromARGB(255, 115, 20, 13))),
                           ],
                         ),
                       ],
-                    ),
-                    padding: EdgeInsets.only(left: 8),
-                  ),
-                  flex: 5,
-                )
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.remove,
-                        color: ThemeColor.get(context).buttonBackground,
-                      ),
-                      onPressed: actionDecrementQuantity,
-                      highlightColor: Colors.transparent,
-                    ),
-                    Text(cartLineItem.quantity.toString(),
-                        style: Theme.of(context).textTheme.headline6),
-                    IconButton(
-                      icon: Icon(
-                        Icons.add,
-                        color: ThemeColor.get(context).buttonBackground,
-                      ),
-                      onPressed: actionIncrementQuantity,
-                      highlightColor: Colors.transparent,
-                    ),
+                    )
                   ],
                 ),
-                IconButton(
-                  alignment: Alignment.centerRight,
-                  icon: Icon(Icons.delete_outline,
-                      color: Colors.deepOrangeAccent, size: 20),
-                  onPressed: actionRemoveItem,
-                  highlightColor: Colors.transparent,
-                ),
-              ],
+                padding: EdgeInsetsDirectional.only(
+                    top: MediaQuery.of(context).size.height * 0.01,
+                    start: MediaQuery.of(context).size.width * 0.02),
+              ),
+              flex: 5,
             )
           ],
         ),

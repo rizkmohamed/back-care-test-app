@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/future_build_widget.dart';
+import 'package:flutter_app/resources/widgets/grey_border.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 import 'package:woosignal/models/response/products.dart';
@@ -27,23 +26,29 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: [
         Container(
-          height: 50,
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          // height: 50,
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.003,
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 trans("Related products"),
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .caption!
+                    .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
               ),
             ],
           ),
         ),
         Container(
-          height: 200,
+          height: MediaQuery.of(context).size.height * 0.3,
+          color: Colors.transparent,
           child: FutureBuildWidget<List<Product>>(
             asyncFuture: fetchRelated(),
             onValue: (relatedProducts) {
@@ -55,6 +60,10 @@ class ProductDetailRelatedProductsWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: relatedProducts
                     .map((e) => Container(
+                        margin: EdgeInsets.symmetric(
+                          // vertical: MediaQuery.of(context).size.height * 0.003,
+                          horizontal: MediaQuery.of(context).size.width * 0.02,
+                        ),
                         width: MediaQuery.of(context).size.width / 2.2,
                         child: ProductItemContainer(product: e)))
                     .toList(),

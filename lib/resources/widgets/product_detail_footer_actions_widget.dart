@@ -1,5 +1,3 @@
-
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -27,8 +25,11 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      // height: MediaQuery.of(context).size.height * 0.1,
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0.003,
+        horizontal: MediaQuery.of(context).size.width * 0.03,
+      ),
       decoration: BoxDecoration(
         color: ThemeColor.get(context).background,
         boxShadow: [
@@ -45,7 +46,7 @@ class ProductDetailFooterActionsWidget extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (product!.type != "external")
             Row(

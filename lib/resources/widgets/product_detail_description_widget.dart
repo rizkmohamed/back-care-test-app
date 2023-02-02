@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -25,15 +23,20 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
       children: [
         Container(
           height: 50,
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.003,
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                trans("Description"),
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(fontSize: 18),
+                trans("Product Detail"),
+                style: Theme.of(context)
+                    .textTheme
+                    .caption!
+                    .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
               ),
               if (product!.shortDescription!.isNotEmpty &&
@@ -56,7 +59,10 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * 0.003,
+            horizontal: MediaQuery.of(context).size.width * 0.02,
+          ),
           child: HtmlWidget(
               product!.shortDescription!.isNotEmpty
                   ? product!.shortDescription!
@@ -64,7 +70,11 @@ class ProductDetailDescriptionWidget extends StatelessWidget {
               renderMode: RenderMode.column, onTapUrl: (String url) async {
             await launchUrl(Uri.parse(url));
             return true;
-          }, textStyle: Theme.of(context).textTheme.bodyText2),
+          },
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: Colors.grey, fontWeight: FontWeight.bold)),
         ),
       ],
     );

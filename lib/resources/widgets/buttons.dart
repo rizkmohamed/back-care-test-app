@@ -1,5 +1,3 @@
-
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -7,15 +5,21 @@ import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton(
-      {Key? key, this.title, this.action, this.isLoading = false})
+      {Key? key,
+      this.title,
+      this.action,
+      this.isLoading = false,
+      this.raduis = 10})
       : super(key: key);
 
   final String? title;
   final Function? action;
   final bool isLoading;
+  final double raduis;
 
   @override
   Widget build(BuildContext context) => WooSignalButton(
+        raduis: raduis,
         key: key,
         title: title,
         action: action,
@@ -91,6 +95,7 @@ class WooSignalButton extends StatelessWidget {
     this.textStyle,
     this.isLoading = false,
     this.bgColor,
+    this.raduis,
   }) : super(key: key);
 
   final String? title;
@@ -98,12 +103,14 @@ class WooSignalButton extends StatelessWidget {
   final TextStyle? textStyle;
   final Color? bgColor;
   final bool isLoading;
+  final double? raduis;
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      height: (screenWidth >= 385 ? 55 : 49),
+      height: (screenWidth >= 385 ? screenHeight * 0.05 : screenHeight * 0.05),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.transparent,
@@ -111,7 +118,7 @@ class WooSignalButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(raduis!),
           ),
           backgroundColor: bgColor,
           padding: EdgeInsets.all(8),

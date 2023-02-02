@@ -219,32 +219,16 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 219, 236, 244),
       appBar: AppBar(
+        elevation: 0,
         actions: <Widget>[
-          if (_wooSignalApp!.wishlistEnabled!)
-            FutureBuildWidget(
-                asyncFuture: hasAddedWishlistProduct(_product!.id),
-                onValue: (dynamic isInFavourites) {
-                  return isInFavourites
-                      ? IconButton(
-                          onPressed: () => widget.controller.toggleWishList(
-                              onSuccess: () => setState(() {}),
-                              wishlistAction: WishlistAction.remove),
-                          icon: Icon(Icons.favorite, color: Colors.red))
-                      : IconButton(
-                          onPressed: () => widget.controller.toggleWishList(
-                              onSuccess: () => setState(() {}),
-                              wishlistAction: WishlistAction.add),
-                          icon: Icon(
-                            Icons.favorite_border,
-                          ));
-                }),
-          CartIconWidget(),
+          // CartIconWidget(),
         ],
-        title: StoreLogo(
-            height: 55,
-            showBgWhite: (Theme.of(context).brightness == Brightness.dark)),
-        centerTitle: true,
+        // title: StoreLogo(
+        //     height: 55,
+        //     showBgWhite: (Theme.of(context).brightness == Brightness.dark)),
+        // centerTitle: true,
       ),
       body: SafeArea(
         child: _isLoading
@@ -257,6 +241,33 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                     child: ProductDetailBodyWidget(
                       wooSignalApp: _wooSignalApp,
                       product: _product,
+                      favIconWidgetsOnImageSwiper: FutureBuildWidget(
+                          asyncFuture: hasAddedWishlistProduct(_product!.id),
+                          onValue: (dynamic isInFavourites) {
+                            return isInFavourites
+                                ? IconButton(
+                                    onPressed: () => widget.controller
+                                        .toggleWishList(
+                                            onSuccess: () => setState(() {}),
+                                            wishlistAction:
+                                                WishlistAction.remove),
+                                    icon:
+                                        Icon(Icons.favorite, color: Colors.red))
+                                : IconButton(
+                                    onPressed: () => widget.controller
+                                        .toggleWishList(
+                                            onSuccess: () => setState(() {}),
+                                            wishlistAction: WishlistAction.add),
+                                    icon: Icon(
+                                      Icons.favorite_border,
+                                    ));
+                          }),
+                      shareButton: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.share,
+                            // color: Colors.grey.shade300,
+                          )),
                     ),
                   ),
                   // </Product body>
@@ -273,6 +284,81 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                   )
                 ],
               ),
+
+        /// / <<<<<<< sliver app bar >>>>>>
+        // CustomScrollView(
+        //     // primary: true,
+        //     // shrinkWrap: true,
+        //     slivers: [
+        //       SliverAppBar(
+        //         // expandedHeight: 150,
+        //         stretch: true,
+        //         floating: true,
+        //         flexibleSpace: FlexibleSpaceBar(
+        //           title: Text(
+        //             _product!.name!,
+        //           ),
+        //           centerTitle: true,
+        //         ),
+        //         // pinned: true,
+        //       ),
+        //       SliverList(
+        //         delegate: SliverChildListDelegate(
+        //           [
+        //             ProductDetailBodyWidget(
+        //               wooSignalApp: _wooSignalApp,
+        //               product: _product,
+        //               favIconWidgetsOnImageSwiper: FutureBuildWidget(
+        //                   asyncFuture:
+        //                       hasAddedWishlistProduct(_product!.id),
+        //                   onValue: (dynamic isInFavourites) {
+        //                     return isInFavourites
+        //                         ? IconButton(
+        //                             onPressed: () => widget.controller
+        //                                 .toggleWishList(
+        //                                     onSuccess: () =>
+        //                                         setState(() {}),
+        //                                     wishlistAction:
+        //                                         WishlistAction.remove),
+        //                             icon: Icon(Icons.favorite,
+        //                                 color: Colors.red))
+        //                         : IconButton(
+        //                             onPressed: () => widget.controller
+        //                                 .toggleWishList(
+        //                                     onSuccess: () =>
+        //                                         setState(() {}),
+        //                                     wishlistAction:
+        //                                         WishlistAction.add),
+        //                             icon: Icon(
+        //                               Icons.favorite_border,
+        //                             ));
+        //                   }),
+        //               shareButton: IconButton(
+        //                   onPressed: () {},
+        //                   icon: Icon(
+        //                     Icons.share,
+        //                     // color: Colors.grey.shade300,
+        //                   )),
+        //             ),
+        //             // </Product body>
+        //             ProductDetailFooterActionsWidget(
+        //               onAddToCart: _addItemToCart,
+        //               onViewExternalProduct:
+        //                   widget.controller.viewExternalProduct,
+        //               onAddQuantity: () => widget.controller
+        //                   .addQuantityTapped(
+        //                       onSuccess: () => setState(() {})),
+        //               onRemoveQuantity: () => widget.controller
+        //                   .removeQuantityTapped(
+        //                       onSuccess: () => setState(() {})),
+        //               product: _product,
+        //               quantity: widget.controller.quantity,
+        //             )
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   )
       ),
     );
   }

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/models/cart_line_item.dart';
@@ -10,6 +8,7 @@ import 'package:flutter_app/bootstrap/helpers.dart';
 import 'package:flutter_app/bootstrap/shared_pref/sp_auth.dart';
 import 'package:flutter_app/resources/widgets/app_loader_widget.dart';
 import 'package:flutter_app/resources/widgets/buttons.dart';
+import 'package:flutter_app/resources/widgets/grey_border.dart';
 import 'package:flutter_app/resources/widgets/safearea_widget.dart';
 import 'package:flutter_app/resources/widgets/text_row_widget.dart';
 import 'package:flutter_app/resources/widgets/woosignal_ui.dart';
@@ -176,8 +175,10 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 242, 244, 245),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 242, 244, 245),
         title: Text(
           trans("Cart"),
         ),
@@ -189,7 +190,7 @@ class _CartPageState extends State<CartPage> {
             child: Align(
               child: Padding(
                 child: Text(
-                  trans("Clear Cart"),
+                  trans("Clear "),
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
                 padding: EdgeInsets.only(right: 8),
@@ -259,60 +260,101 @@ class _CartPageState extends State<CartPage> {
                           child: AppLoaderWidget(),
                         )
                       : Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.all(8),
-                              itemCount: _cartLines.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                CartLineItem cartLineItem = _cartLines[index];
-                                return CartItemContainer(
-                                  cartLineItem: cartLineItem,
-                                  actionIncrementQuantity: () =>
-                                      actionIncrementQuantity(
-                                          cartLineItem: cartLineItem),
-                                  actionDecrementQuantity: () =>
-                                      actionDecrementQuantity(
-                                          cartLineItem: cartLineItem),
-                                  actionRemoveItem: () =>
-                                      actionRemoveItem(index: index),
-                                );
-                              }),
                           flex: 3,
+                          child: ListView(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${_cartLines.length.toString()} ${trans("items")} ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              0.01),
+                                  itemCount: _cartLines.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    CartLineItem cartLineItem =
+                                        _cartLines[index];
+                                    return CartItemContainer(
+                                      cartLineItem: cartLineItem,
+                                      actionIncrementQuantity: () =>
+                                          actionIncrementQuantity(
+                                              cartLineItem: cartLineItem),
+                                      actionDecrementQuantity: () =>
+                                          actionDecrementQuantity(
+                                              cartLineItem: cartLineItem),
+                                      actionRemoveItem: () =>
+                                          actionRemoveItem(index: index),
+                                    );
+                                  }),
+                              GreyBorder(
+                                ismargin: false,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                ),
+                                child: Column(
+                                  children: [
+                                    FutureBuilder<String>(
+                                      future: Cart.getInstance
+                                          .getTotal(withFormat: true),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<String> snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.waiting:
+                                            return Text("");
+                                          default:
+                                            if (snapshot.hasError) {
+                                              return Text("");
+                                            } else {
+                                              return Padding(
+                                                child: TextRowWidget(
+                                                  title: trans("Total"),
+                                                  text: (_isLoading
+                                                      ? ""
+                                                      : snapshot.data),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 10, top: 10),
+                                              );
+                                            }
+                                        }
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.05,
+                                        vertical:
+                                            MediaQuery.of(context).size.height *
+                                                0.02,
+                                      ),
+                                      child: Center(
+                                        child: PrimaryButton(
+                                          raduis: 25,
+                                          title: trans("CONTINUE"),
+                                          action: _actionProceedToCheckout,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         )),
               // Divider(
               //   color: Colors.black45,
               // ),
-              FutureBuilder<String>(
-                future: Cart.getInstance.getTotal(withFormat: true),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text("");
-                    default:
-                      if (snapshot.hasError) {
-                        return Text("");
-                      } else {
-                        return Padding(
-                          child: TextRowWidget(
-                            title: trans("Total"),
-                            text: (_isLoading ? "" : snapshot.data),
-                          ),
-                          padding: EdgeInsets.only(bottom: 10, top: 10),
-                        );
-                      }
-                  }
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Center(
-                  child: PrimaryButton(
-                    title: trans("CHECKOUT"),
-                    action: _actionProceedToCheckout,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

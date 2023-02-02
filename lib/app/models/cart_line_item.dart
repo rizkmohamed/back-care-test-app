@@ -22,6 +22,9 @@ class CartLineItem {
   bool? onSale;
   String? stockStatus;
   Object? metaData = {};
+  String? averageRating;
+  String? regularPrice;
+  String? type;
 
   CartLineItem(
       {this.name,
@@ -41,7 +44,10 @@ class CartLineItem {
       this.subtotal,
       this.onSale,
       this.total,
-      this.metaData});
+      this.metaData,
+      this.averageRating,
+      this.regularPrice,
+      this.type});
 
   String getCartTotal() {
     return (quantity * parseWcPrice(subtotal)).toStringAsFixed(2);
@@ -64,6 +70,9 @@ class CartLineItem {
         ? getEnv("PRODUCT_PLACEHOLDER_IMAGE")
         : product.images.first.src;
     total = product.price;
+    averageRating = product.averageRating;
+    regularPrice = product.regularPrice;
+    type = product.type;
   }
 
   CartLineItem.fromProductVariation(
@@ -93,6 +102,7 @@ class CartLineItem {
     shippingIsTaxable = product.shippingTaxable;
     variationOptions = options.join("; ");
     total = productVariation.price;
+    averageRating = product.averageRating;
   }
 
   CartLineItem.fromJson(Map<String, dynamic> json)
@@ -120,7 +130,10 @@ class CartLineItem {
                 .toList(),
         onSale = json['on_sale'],
         variationOptions = json['variation_options'],
-        metaData = json['metaData'];
+        metaData = json['metaData'],
+        averageRating = json['average_rating'],
+        regularPrice = json['regular_price'],
+        type = json['type'];
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -143,5 +156,8 @@ class CartLineItem {
         'on_sale': onSale,
         'total': total,
         'meta_data': metaData,
+        'average_rating': averageRating,
+        'regular_price': regularPrice,
+        'type': type,
       };
 }
