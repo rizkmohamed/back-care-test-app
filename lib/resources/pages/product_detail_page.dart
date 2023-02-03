@@ -248,6 +248,7 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                                 ? IconButton(
                                     onPressed: () => widget.controller
                                         .toggleWishList(
+                                            product: _product!,
                                             onSuccess: () => setState(() {}),
                                             wishlistAction:
                                                 WishlistAction.remove),
@@ -256,17 +257,19 @@ class _ProductDetailState extends NyState<ProductDetailPage> {
                                 : IconButton(
                                     onPressed: () => widget.controller
                                         .toggleWishList(
+                                            product: _product!,
                                             onSuccess: () => setState(() {}),
                                             wishlistAction: WishlistAction.add),
                                     icon: Icon(
                                       Icons.favorite_border,
+                                      color: Colors.grey,
                                     ));
                           }),
                       shareButton: IconButton(
                           onPressed: () {},
                           icon: Icon(
                             Icons.share,
-                            // color: Colors.grey.shade300,
+                            color: Colors.grey,
                           )),
                     ),
                   ),

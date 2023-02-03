@@ -14,6 +14,7 @@ import 'package:woosignal/models/response/woosignal_app.dart';
 
 import '../../bootstrap/helpers.dart';
 import '../pages/browse_category_page.dart';
+import 'cart_icon_widget.dart';
 
 class NoticThemeWidget extends StatefulWidget {
   NoticThemeWidget(
@@ -197,7 +198,8 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
         //   tabWidget: CartPage(),
         // )
         TabItem(
-      icon: Icon(Icons.shopping_cart_outlined),
+      // icon: Icon(Icons.shopping_cart_outlined),
+      icon: CartIconWidget(),
       title: 'Cart',
     ));
 

@@ -163,53 +163,55 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                         separatorBuilder: (cxt, i) => Divider(
                           thickness: width * 0.05,
                         ),
-                        itemBuilder: (BuildContext context, int index) =>
-                            InkWell(
-                          child: SizedBox(
-                            width: width * 0.2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  // foregroundImage: AssetImage(
-                                  //     'public/assets/images/instagram.png'),
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            child: SizedBox(
+                              width: width * 0.2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    // foregroundImage: AssetImage(
+                                    //     'public/assets/images/instagram.png'),
 
-                                  child: CachedImageWidget(
-                                      fit: BoxFit.cover,
-                                      image:
-                                          _categories[index].image.toString()),
+                                    child: CachedImageWidget(
+                                        fit: BoxFit.cover,
+                                        image:
+                                            _categories[index].imageUrl ?? ''),
 
-                                  radius: 25,
-                                  // backgroundColor: Colors.white,
+                                    radius: 25,
+                                    // backgroundColor: Colors.white,
 
-                                  //  AssetImage(
-                                  //     'public/assets/images/instagram.png')),
-                                  //     CachedImageWidget(
+                                    //  AssetImage(
+                                    //     'public/assets/images/instagram.png')),
+                                    //     CachedImageWidget(
 
-                                  //   fit: BoxFit.cover,
-                                  // )
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    parseHtmlString(_categories[index].name),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                    //   fit: BoxFit.cover,
+                                    // )
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Text(
+                                      parseHtmlString(_categories[index].name),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            // Navigator.pop(context);
-                            Navigator.pushNamed(context, "/browse-category",
-                                    arguments: _categories[index])
-                                .then((value) => setState(() {}));
-                          },
-                        ),
+                            onTap: () {
+                              // Navigator.pop(context);
+                              Navigator.pushNamed(context, "/browse-category",
+                                      arguments: _categories[index])
+                                  .then((value) => setState(() {}));
+                            },
+                          );
+                        },
                       ),
                     ),
                     Container(

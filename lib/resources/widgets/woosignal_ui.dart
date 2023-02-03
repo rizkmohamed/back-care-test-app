@@ -325,6 +325,8 @@ class ProductItemContainer extends StatefulWidget {
 class _ProductItemContainerState extends State<ProductItemContainer> {
   @override
   Widget build(BuildContext context) {
+    //  double height = MediaQuery.of(context).size.height;
+    //  double width = MediaQuery.of(context).size.width;
     if (widget.product == null) {
       return SizedBox.shrink();
     }
@@ -333,6 +335,7 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
       builder: (cxt, constraints) => InkWell(
         child: Container(
           height: constraints.maxHeight,
+          width: constraints.maxWidth,
           child: Stack(
             // crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -407,14 +410,17 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                     // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: constraints.maxWidth * 0.01),
                         child: Center(
                           child: Text(
                             widget.product!.name!,
-                            style:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                             maxLines: 1,
                             overflow: TextOverflow.fade,
                             textAlign: TextAlign.center,
@@ -422,8 +428,9 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 3),
-                        height: constraints.maxHeight * 0.1,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: constraints.maxWidth * 0.01),
+                        // height: constraints.maxHeight * 0.1,
                         child: Center(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,9 +440,12 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                                 "${formatStringCurrency(total: widget.product!.price)} ",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText2!
-                                    .copyWith(fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.left,
+                                    .bodySmall!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 8),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
                               // if (widget.product!.onSale! &&
@@ -487,50 +497,49 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
               ),
               if (AppHelper.instance.appConfig!.wishlistEnabled == true)
                 Positioned.directional(
-                  top: 0,
-                  start: 5,
+                  top: MediaQuery.of(context).size.height * 0.005,
+                  start: MediaQuery.of(context).size.height * 0.005,
                   textDirection: TextDirection.ltr,
                   child: Container(
-                    height: 50,
-                    // width: double.infinity,
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      margin: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                          width: 1,
-                        ),
-                        shape: BoxShape.circle,
+                    height: constraints.maxHeight * 0.15,
+                    width: constraints.maxHeight * 0.15,
+                    // margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                        width: 1,
                       ),
-                      child: FutureBuildWidget(
-                          asyncFuture:
-                              hasAddedWishlistProduct(widget.productid),
-                          onValue: (dynamic isInFavourites) {
-                            if (isInFavourites) {
-                              return IconButton(
-                                  onPressed: () =>
-                                      widget.controller?.toggleWishList(
-                                        onSuccess: () => setState(() {}),
-                                        wishlistAction: WishlistAction.remove,
-                                      ),
-                                  icon:
-                                      Icon(Icons.favorite, color: Colors.red));
-                            } else {
-                              return IconButton(
-                                  onPressed: () => widget.controller
-                                      ?.toggleWishList(
-                                          onSuccess: () => setState(() {}),
-                                          wishlistAction: WishlistAction.add),
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                    // size: 30,
-                                  ));
-                            }
-                          }),
+                      shape: BoxShape.circle,
                     ),
+                    alignment: Alignment.center,
+                    child: FutureBuildWidget(
+                        asyncFuture: hasAddedWishlistProduct(widget.productid),
+                        onValue: (dynamic isInFavourites) {
+                          if (isInFavourites) {
+                            return IconButton(
+                                onPressed: () {
+                                  widget.controller?.product = widget.product;
+                                  widget.controller?.toggleWishList(
+                                    product: widget.product!,
+                                    onSuccess: () => setState(() {}),
+                                    wishlistAction: WishlistAction.remove,
+                                  );
+                                },
+                                icon: Icon(Icons.favorite, color: Colors.red));
+                          } else {
+                            return IconButton(
+                                onPressed: () => widget.controller
+                                    ?.toggleWishList(
+                                        product: widget.product!,
+                                        onSuccess: () => setState(() {}),
+                                        wishlistAction: WishlistAction.add),
+                                icon: Icon(
+                                  Icons.favorite_border, color: Colors.grey,
+                                  // size: 30,
+                                ));
+                          }
+                        }),
                   ),
                 ),
               PositionedDirectional(
@@ -861,26 +870,29 @@ class CartItemContainer extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              alignment: Alignment.centerRight,
-                              icon: Icon(Icons.delete_outline_rounded,
-                                  color: Color.fromARGB(255, 115, 20, 13),
-                                  size: 20),
-                              onPressed: actionRemoveItem,
-                              highlightColor: Colors.transparent,
-                            ),
-                            Text(trans("Delete"),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                        color:
-                                            Color.fromARGB(255, 115, 20, 13))),
-                          ],
+                        InkWell(
+                          onTap: actionRemoveItem,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                alignment: Alignment.centerRight,
+                                icon: Icon(Icons.delete_outline_rounded,
+                                    color: Color.fromARGB(255, 115, 20, 13),
+                                    size: 20),
+                                onPressed: actionRemoveItem,
+                                highlightColor: Colors.transparent,
+                              ),
+                              Text(trans("Delete"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(
+                                          color: Color.fromARGB(
+                                              255, 115, 20, 13))),
+                            ],
+                          ),
                         ),
                       ],
                     )

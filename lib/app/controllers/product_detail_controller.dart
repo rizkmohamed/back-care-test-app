@@ -75,6 +75,7 @@ class ProductDetailController extends Controller {
 
   toggleWishList(
       {required Function onSuccess,
+      required Product product,
       required WishlistAction wishlistAction}) async {
     String subtitleMsg;
     if (wishlistAction == WishlistAction.remove) {
@@ -85,7 +86,7 @@ class ProductDetailController extends Controller {
       subtitleMsg = trans("This product has been added to your wishlist");
     }
     showStatusAlert(
-      context,
+      NyNavigator.context,
       title: trans("Success"),
       subtitle: subtitleMsg,
       icon: Icons.favorite,

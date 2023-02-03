@@ -44,7 +44,7 @@ class ProductDetailBodyWidget extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.35,
                   ),
                   GreyBorder(
-                      height: MediaQuery.of(context).size.height * 0.12,
+                      // height: MediaQuery.of(context).size.height * 0.12,
                       child: ProductDetailHeaderWidget(product: product)),
                 ],
               ),
