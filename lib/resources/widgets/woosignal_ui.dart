@@ -555,9 +555,7 @@ class _ProductItemContainerState extends State<ProductItemContainer> {
                         color: Colors.white,
                         size: 17,
                       ),
-                      onPressed: () => widget.addToCart != null
-                          ? widget.addToCart!(widget.product)
-                          : () {},
+                      onPressed: () => widget.addToCart!(widget.product),
                     ),
                   ))
             ],

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/account_order_detail_controller.dart';
 import 'package:flutter_app/bootstrap/helpers.dart';
@@ -54,11 +52,10 @@ class _AccountOrderDetailPageState extends NyState<AccountOrderDetailPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
-                      "${trans("Date Ordered").capitalize()}: " +
-                          dateFormatted(
-                            date: _order!.dateCreated!,
-                            formatType: formatForDateTime(FormatType.date),
-                          ),
+                      "${trans("Date Ordered").capitalize()}: ${dateFormatted(
+                        date: _order!.dateCreated!,
+                        formatType: formatForDateTime(FormatType.date),
+                      )}",
                     ),
                   ),
                   Container(

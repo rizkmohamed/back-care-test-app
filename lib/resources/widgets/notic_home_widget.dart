@@ -291,18 +291,6 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                         addToCart: _addItemToCart,
                                         controller: controller,
                                         productid: products[i].id,
-                                        // disFav: () => widget.controller
-                                        //     .toggleWishList(
-                                        //         onSuccess: () =>
-                                        //             setState(() {}),
-                                        //         wishlistAction:
-                                        //             WishlistAction.remove),
-                                        // tabFav: () => widget.controller
-                                        //     .toggleWishList(
-                                        //         onSuccess: () =>
-                                        //             setState(() {}),
-                                        //         wishlistAction:
-                                        //             WishlistAction.add),
                                         product: products[i],
                                         onTap: _showProduct),
                                   );
@@ -346,6 +334,7 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                                   // height: height * 0.7,
                                   // width: width / 2.5,
                                   child: ProductItemContainer(
+                                      controller: controller,
                                       productid: products[i].id,
                                       // tabFav: () => widget.controller
                                       //     .toggleWishList(

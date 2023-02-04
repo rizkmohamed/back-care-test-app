@@ -58,7 +58,9 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
       // BrowseCategoryPage(),
       CartPage(),
       NoticHomeWidget(wooSignalApp: widget.wooSignalApp),
-      AccountDetailPage(showLeadingBackButton: false),
+      AccountDetailPage(
+        showLeadingBackButton: false,
+      ),
       WishListPageWidget(),
     ];
     return Scaffold(
@@ -90,7 +92,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
                     backgroundColor: Color.fromARGB(255, 49, 6, 122),
                     activeColor: Colors.white,
                     color: Colors.white,
-                    disableDefaultTabController: true,
+                     disableDefaultTabController: true,
                     top: -15,
                     height: MediaQuery.of(context).size.height * 0.06,
                     onTap:
@@ -184,7 +186,7 @@ class _NoticThemeWidgetState extends State<NoticThemeWidget> {
         //     tabWidget: HomeSearchPage()),
         TabItem(
       icon: Icon(
-        Icons.search,
+        Icons.search, color: Colors.white,
         // color: ThemeColor.get(context).bottomTabBarIconSelected
       ),
       title: 'Search',

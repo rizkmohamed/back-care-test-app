@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/controllers/customer_orders_loader_controller.dart';
@@ -138,9 +136,7 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          order.lineItems!.length.toString() +
-                              " " +
-                              trans("items"),
+                          "${order.lineItems!.length} ${trans("items")}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
@@ -150,15 +146,13 @@ class _AccountDetailOrdersWidgetState extends State<AccountDetailOrdersWidget> {
                       ],
                     ),
                     Text(
-                      dateFormatted(
-                            date: order.dateCreated!,
-                            formatType: formatForDateTime(FormatType.date),
-                          ) +
-                          "\n" +
-                          dateFormatted(
-                            date: order.dateCreated!,
-                            formatType: formatForDateTime(FormatType.time),
-                          ),
+                      "${dateFormatted(
+                        date: order.dateCreated!,
+                        formatType: formatForDateTime(FormatType.date),
+                      )}\n${dateFormatted(
+                        date: order.dateCreated!,
+                        formatType: formatForDateTime(FormatType.time),
+                      )}",
                       textAlign: TextAlign.right,
                       style: Theme.of(context).textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.w400,
