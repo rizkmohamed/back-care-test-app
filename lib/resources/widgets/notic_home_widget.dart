@@ -233,16 +233,19 @@ class _NoticHomeWidgetState extends State<NoticHomeWidget> {
                       height: height / 4,
                     ),
                     Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.05),
                       height: height * 0.1,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(trans("RECENT")),
+                          Text(trans("Recent")),
                           Flexible(
                             child: Text(
-                              trans("PRODUCTS"),
+                              trans("Products".tr()),
                               style: Theme.of(context).textTheme.headline4,
-                              maxLines: 2,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           )

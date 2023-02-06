@@ -247,7 +247,7 @@ class _CartPageState extends State<CartPage> {
                               onPressed: () {
                                 Navigator.pushNamed(context, "/home");
                               },
-                              child: Text('CONTINUE SHOPPING'),
+                              child: Text(trans("CONTINUE SHOPPING")),
                             )
                           ],
                         ),

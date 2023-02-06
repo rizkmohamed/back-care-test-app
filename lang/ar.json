@@ -119,7 +119,7 @@
     "Account": "حساب",
     "Logout": "تسجيل الخروج",
     "No orders found": "لا توجد طلبات",
-    "items": "العناصر",
+    "items": "عناصر",
     "Update Details": "تحديث التفاصيل",
     "Invalid details": "تفاصيل غير صحيحة",
     "Please check your email and password": "يرجى التحقق من البريد الإلكتروني وكلمة المرور الخاصة بك",
@@ -207,7 +207,7 @@
     "This coupon has expired": "انتهت صلاحية هذا الكوبون",
     "Usage limit has been reached": "تم الوصول إلى الحد الأقصى للاستخدام",
     "View All": "عرض الكل",
-    "Wishlist": "قائمة الأمنيات",
+    "Wishlist": "المفضلة",
     "No items found": "لم يتم العثور على أي عناصر",
     "This product has been removed from your wishlist": "تم إزالة هذا المنتج من قائمة الأماني الخاصة بك",
     "This product has been added to your wishlist": "تمت إضافة هذا المنتج إلى قائمة الأماني الخاصة بك",
@@ -226,5 +226,12 @@
     "Are you sure?": "هل أنت متأكد؟",
     "Yes, delete my account": "نعم، حذف حسابي",
     "Account deleted": "تم حذف الحساب",
-    "Shipping is not supported for your location, sorry": "عذرا، الشحن غير مدعوم لموقعك"
+    "Shipping is not supported for your location, sorry": "عذرا، الشحن غير مدعوم لموقعك",
+    "Products":"المنتجات",
+    "Recent":"احدث",
+    "Move To Bag":"انتقل للعربة",
+    "Delete":"حذف",
+    "Clear":"مسح",
+    "CONTINUE SHOPPING":"يلا نكمل تسوق",
+    "CONTINUE":"يلا نكمل"
 }
